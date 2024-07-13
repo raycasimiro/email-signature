@@ -47,6 +47,7 @@ const content = `<table
                   >
                     <p style="margin: 0.04px" id="signoff">
                       <span
+                        id="sign-off"
                         class="text"
                         style="
                           font-family: Arial, Helvetica, sans-serif;
@@ -118,6 +119,7 @@ const content = `<table
                               <span
                                 id="name" 
                                 class="text"
+                                placeholder="John Smith"
                                 style="
                                   font-family: Arial, Helvetica, sans-serif;
                                   font-size: 22px;
@@ -127,7 +129,7 @@ const content = `<table
                                   color: #1b2130;
                                   display: inline;
                                 "
-                                >Ray Casimiro</span
+                                >John Smith</span
                               >
                             </p>
                           </td>
@@ -158,7 +160,7 @@ const content = `<table
                                   color: #8891a7;
                                   display: inline;
                                 "
-                                >LORD OF DESIGN</span
+                                >Job title</span
                               >
                             </p>
                           </td>
@@ -268,8 +270,8 @@ const content = `<table
                                     >
                                       <a
                                         id="email"
-                                        class="link"
-                                        href="mailto:ray@subble.com"
+                                        class="email"
+                                        href="mailto:john@subble.com"
                                         target="_blank"
                                         rel="nofollow"
                                         style="
@@ -283,7 +285,7 @@ const content = `<table
                                           display: inline;
                                           text-decoration: none;
                                         "
-                                        >ray@subble.com</a
+                                        >john@subble.com</a
                                       >
                                     </p>
                                   </td>
@@ -341,7 +343,8 @@ const content = `<table
                                       "
                                     >
                                       <a
-                                        class="link"
+                                        id="website"
+                                        class="url"
                                         href="https://www.subble.com/"
                                         target="_blank"
                                         rel="nofollow"
