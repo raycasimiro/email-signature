@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "./components/ui/input";
@@ -14,7 +14,7 @@ type InputObject = {
 type FormProps = {
   fields: InputObject[];
   onFieldChange: (id: string, value: string) => void;
-  onBlurCallback: (data: FormValues) => void;
+  initialValues?: FormValues; // Add this line
 };
 
 type FormValues = {
@@ -30,49 +30,54 @@ const schema = z.object({
 const DynamicForm: React.FC<FormProps> = ({
   fields,
   onFieldChange,
-  onBlurCallback,
+  initialValues = {}, // Add this line
 }) => {
   const {
     control,
     setValue,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    defaultValues: initialValues, // Set initial values here
   });
-  const [formData, setFormData] = useState<FormValues>({});
 
   useEffect(() => {
     fields.forEach((field) => {
-      setValue(field.id, formData[field.id] || "");
+      setValue(field.id, initialValues[field.id] || "");
     });
-  }, [fields, setValue, formData]);
+  }, [fields, setValue, initialValues]);
 
   const handleChange = (id: string, value: string) => {
-    setFormData((prevState) => ({ ...prevState, [id]: value }));
     onFieldChange(id, value);
-  };
-
-  const handleBlur = () => {
-    const currentValues = getValues();
-    onBlurCallback(currentValues);
   };
 
   const onSubmit = (data: FormValues) => {
     console.log("Form Data:", data);
   };
 
+  const toSentenceCase = (input: string): string => {
+    // Convert kebab-case to regular string
+    const regularString = input.replace(/-/g, " ");
+
+    // Convert to sentence case
+    const sentenceCaseString =
+      regularString.charAt(0).toUpperCase() +
+      regularString.slice(1).toLowerCase();
+
+    return sentenceCaseString;
+  };
+
   return (
-    <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       {fields.map((field) => (
-        <div key={field.id} className="text-left">
-          <Label htmlFor={field.id}>{field.id}</Label>
+        <div key={field.id} className="text-left flex flex-col gap-2">
+          <Label htmlFor={field.id}>{toSentenceCase(field.id)}</Label>
           <Controller
             name={field.id}
             control={control}
-            defaultValue={formData[field.id] || ""}
+            defaultValue={initialValues[field.id] || ""} // Set default value here
             render={({ field: { onChange, value, onBlur, ref } }) => (
               <>
                 <Input
@@ -87,8 +92,8 @@ const DynamicForm: React.FC<FormProps> = ({
                   onBlur={(e) => {
                     onBlur();
                     handleChange(field.id, e.target.value);
-                    handleBlur();
                   }}
+                  placeholder={field.placeholder} // Optional: Set placeholder
                 />
                 {errors[field.id] && (
                   <span className="text-red-600 text-sm">

@@ -58,7 +58,7 @@ const content = `<table
                           color: #1b2130;
                           display: inline;
                         "
-                        >Kind Regards,</span
+                        >Best regards,</span
                       >
                     </p>
                   </td>

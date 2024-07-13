@@ -38,24 +38,6 @@ const SignaturePreview = ({ tableHtml }: SignatureEditorProps) => {
     }
   };
 
-  const handleOnBlur = (formValues: { [key: string]: string }) => {
-    const changes: { [key: string]: { oldValue: string; newValue: string } } =
-      {};
-
-    Object.entries(formValues).forEach(([id, newValue]) => {
-      const oldValue = previousValues[id];
-      if (oldValue !== newValue) {
-        changes[id] = { oldValue, newValue };
-      }
-    });
-
-    // Log the changes
-    console.log("Changes detected:", changes);
-
-    // Update the previous values state with the current form values
-    setPreviousValues(formValues);
-  };
-
   const options: HTMLReactParserOptions = {
     trim: true,
     replace(domNode) {
@@ -68,6 +50,7 @@ const SignaturePreview = ({ tableHtml }: SignatureEditorProps) => {
           )
         ) {
           const style = parseCssString(domNode.attribs.style);
+
           return (
             <span id={domNode.attribs.id} style={style}>
               {changedField.value}
@@ -99,7 +82,7 @@ const SignaturePreview = ({ tableHtml }: SignatureEditorProps) => {
       <DynamicForm
         fields={editableFields}
         onFieldChange={handleFieldChange}
-        onBlurCallback={handleOnBlur}
+        initialValues={previousValues} // Pass initial values here
       />
 
       <div className="pt-5">
