@@ -6,7 +6,7 @@ import DynamicForm from "./DynamicForm";
 import content from "./templates/basic";
 import extractIdAndClass from "./utils/extractIdandClass";
 
-interface SingnatureEditorProps {
+interface SignatureEditorProps {
   tableHtml: string;
 }
 
@@ -15,8 +15,10 @@ interface EditableFieldObj {
   class: string;
 }
 
-const SignatureEditor = ({ tableHtml }: SingnatureEditorProps) => {
+const SignatureEditor = ({ tableHtml }: SignatureEditorProps) => {
   const divRef = useRef<HTMLDivElement>(null);
+  const [htmlContent, setHtmlContent] = useState<string>(tableHtml);
+
   const [editableFields, setEditableFields] = useState<EditableFieldObj[]>([]);
   const [changedField, setChangedField] = useState<{
     id: string;
@@ -25,6 +27,14 @@ const SignatureEditor = ({ tableHtml }: SingnatureEditorProps) => {
 
   const handleFieldChange = (id: string, value: string) => {
     setChangedField({ id, value });
+
+    if (divRef.current) {
+      const element = divRef.current.querySelector(`#${id}`);
+      if (element) {
+        element.innerHTML = value;
+        setHtmlContent(divRef.current.innerHTML);
+      }
+    }
   };
 
   const options: HTMLReactParserOptions = {
@@ -38,7 +48,7 @@ const SignatureEditor = ({ tableHtml }: SingnatureEditorProps) => {
               changedField.id === domNode.attribs.id
           )
         )
-          return <span>{changedField.value}</span>;
+          return <span id={domNode.attribs.id}>{changedField.value}</span>;
       }
     },
   };
@@ -56,7 +66,6 @@ const SignatureEditor = ({ tableHtml }: SingnatureEditorProps) => {
   };
 
   const copyToClipboard = async () => {
-    console.log(editableFields);
     try {
       const selection = document.getSelection();
 
@@ -90,11 +99,12 @@ const SignatureEditor = ({ tableHtml }: SingnatureEditorProps) => {
   useEffect(() => {
     const idClassArray = extractIdAndClass(tableHtml);
     setEditableFields(idClassArray);
+    setHtmlContent(tableHtml);
   }, [tableHtml]);
 
   return (
     <div>
-      <div ref={divRef}>{parse(tableHtml, options)}</div>
+      <div ref={divRef}>{parse(htmlContent, options)}</div>
       <DynamicForm fields={editableFields} onFieldChange={handleFieldChange} />
       <div className="pt-5">
         <Button onClick={copyAllContentToClipboard}>Copy to Clipboard</Button>

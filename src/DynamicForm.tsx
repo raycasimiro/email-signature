@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { Input } from "./components/ui/input";
+import { Label } from "./components/ui/label";
 
 type InputObject = {
   id: string;
@@ -31,16 +33,16 @@ const DynamicForm: React.FC<FormProps> = ({ fields, onFieldChange }) => {
   };
 
   return (
-    <form>
+    <form className="flex flex-col gap-2">
       {fields.map((field) => (
-        <div key={field.id}>
-          <label htmlFor={field.id}>{field.id}</label>
+        <div key={field.id} className="text-left">
+          <Label htmlFor={field.id}>{field.id}</Label>
           <Controller
             name={field.id}
             control={control}
             defaultValue={formData[field.id] || ""}
             render={({ field: { onChange, value, onBlur, ...fieldProps } }) => (
-              <input
+              <Input
                 id={field.id}
                 {...fieldProps}
                 type={field.class}
