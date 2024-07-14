@@ -1,5 +1,7 @@
+import { CircleCheck, ClipboardCopy } from "lucide-react";
 import React from "react";
 import { Button } from "./components/ui/button";
+import { useToast } from "./components/ui/use-toast";
 
 interface ClipboardProps {
   divRef: React.RefObject<HTMLDivElement>;
@@ -10,6 +12,7 @@ const CopytoClipboardButton: React.FC<ClipboardProps> = ({
   divRef,
   isDisabled,
 }) => {
+  const { toast } = useToast();
   const selectAllContent = () => {
     if (divRef.current) {
       const range = document.createRange();
@@ -51,10 +54,24 @@ const CopytoClipboardButton: React.FC<ClipboardProps> = ({
   const copyAllContentToClipboard = async () => {
     selectAllContent();
     await copyToClipboard();
+    toast({
+      variant: "success",
+      title: (
+        <div className="flex items-center gap-1">
+          <CircleCheck className="text-white" />{" "}
+          <span>Copied to clipboard</span>
+        </div>
+      ),
+    });
   };
 
   return (
-    <Button onClick={copyAllContentToClipboard} disabled={isDisabled}>
+    <Button
+      onClick={copyAllContentToClipboard}
+      disabled={isDisabled}
+      className="bg-orange-600 hover:bg-orange-800 dark:bg-orange-400 disabled:bg-gray-500 dark:disabled:bg-gray-500"
+    >
+      <ClipboardCopy className="h-[1.2rem] w-[1.2rem] mr-2" />
       Copy to Clipboard
     </Button>
   );

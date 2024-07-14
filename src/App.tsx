@@ -1,14 +1,17 @@
 import "./App.css";
-import SignatureEditor from "./SignaturePreview";
+import { ThemeProvider } from "./components/ThemeProvider";
+import { Toaster } from "./components/ui/toaster";
+import SignaturePreview from "./SignatureEditor";
 import content from "./templates/basic";
 
 function App() {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-fit h-fit p-5 bg-white rounded-md shadow-md">
-        <SignatureEditor tableHtml={content} />
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <div className="h-screen">
+        <SignaturePreview tableHtml={content} />
+        <Toaster />
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
 

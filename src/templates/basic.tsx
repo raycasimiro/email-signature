@@ -1,5 +1,4 @@
 const content = `<table
-      id="zs-output-sig"
       border="0"
       cellpadding="0"
       cellspacing="0"
@@ -18,7 +17,6 @@ const content = `<table
         <tr>
           <td style="padding: 0px !important">
             <table
-              id="inner-table"
               border="0"
               cellpadding="0"
               cellspacing="0"
@@ -70,7 +68,6 @@ const content = `<table
         <tr>
           <td style="padding: 0px !important">
             <table
-              id="inner-table"
               border="0"
               cellpadding="0"
               cellspacing="0"

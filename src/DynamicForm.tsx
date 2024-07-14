@@ -14,33 +14,51 @@ type InputObject = {
 type FormProps = {
   fields: InputObject[];
   onFieldChange: (id: string, value: string) => void;
-  initialValues?: FormValues; // Add this line
+  onValidationStatusChange: (isValid: boolean) => void; // Add this line
+  initialValues?: FormValues;
 };
 
 type FormValues = {
   [key: string]: string;
 };
 
+const urlSchema = z.string().refine(
+  (url) => {
+    // Regex to validate URLs that start with "www" and do not contain "http" or "https"
+    const urlPattern = /^www\.[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+    return (
+      urlPattern.test(url) &&
+      !url.includes("http://") &&
+      !url.includes("https://")
+    );
+  },
+  {
+    message: "Invalid URL. Must start with www followed by a valid domain.",
+  }
+);
+
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email").min(1, "Email is required"),
+  website: urlSchema,
   // Add more validation rules based on your form fields
 });
 
 const DynamicForm: React.FC<FormProps> = ({
   fields,
   onFieldChange,
-  initialValues = {}, // Add this line
+  onValidationStatusChange, // Add this line
+  initialValues = {},
 }) => {
   const {
     control,
     setValue,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid }, // Add isValid
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     mode: "onChange",
-    defaultValues: initialValues, // Set initial values here
+    defaultValues: initialValues,
   });
 
   useEffect(() => {
@@ -48,6 +66,10 @@ const DynamicForm: React.FC<FormProps> = ({
       setValue(field.id, initialValues[field.id] || "");
     });
   }, [fields, setValue, initialValues]);
+
+  useEffect(() => {
+    onValidationStatusChange(isValid); // Call the parent callback with the validation status
+  }, [isValid, onValidationStatusChange]); // Run this effect whenever isValid changes
 
   const handleChange = (id: string, value: string) => {
     onFieldChange(id, value);
@@ -58,29 +80,27 @@ const DynamicForm: React.FC<FormProps> = ({
   };
 
   const toSentenceCase = (input: string): string => {
-    // Convert kebab-case to regular string
     const regularString = input.replace(/-/g, " ");
-
-    // Convert to sentence case
     const sentenceCaseString =
       regularString.charAt(0).toUpperCase() +
       regularString.slice(1).toLowerCase();
-
     return sentenceCaseString;
   };
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+      <h2 className="font-bold text-lg">Signature details</h2>
       {fields.map((field) => (
         <div key={field.id} className="text-left flex flex-col gap-2">
           <Label htmlFor={field.id}>{toSentenceCase(field.id)}</Label>
           <Controller
             name={field.id}
             control={control}
-            defaultValue={initialValues[field.id] || ""} // Set default value here
+            defaultValue={initialValues[field.id] || ""}
             render={({ field: { onChange, value, onBlur, ref } }) => (
               <>
                 <Input
+                  className="bg-white text-black border-white"
                   id={field.id}
                   ref={ref}
                   type={field.class}
@@ -93,12 +113,14 @@ const DynamicForm: React.FC<FormProps> = ({
                     onBlur();
                     handleChange(field.id, e.target.value);
                   }}
-                  placeholder={field.placeholder} // Optional: Set placeholder
+                  placeholder={field.placeholder}
                 />
                 {errors[field.id] && (
-                  <span className="text-red-600 text-sm">
-                    {errors[field.id]?.message}
-                  </span>
+                  <div className="box arrow-top-left">
+                    <span className="text-white text-xs">
+                      {errors[field.id]?.message}
+                    </span>
+                  </div>
                 )}
               </>
             )}
