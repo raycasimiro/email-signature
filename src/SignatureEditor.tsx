@@ -113,7 +113,7 @@ const SignatureEditor = ({ tableHtml }: SignatureEditorProps) => {
         {/* <ResizableHandle /> */}
         <ResizablePanel>
           <div className="flex justify-center items-center h-full">
-            <Card className="w-[600px]">
+            <Card className="w-[600px] dark:bg-slate-900">
               <CardHeader>
                 <CardTitle>Basic Signature</CardTitle>
                 <CardDescription>
@@ -127,9 +127,9 @@ const SignatureEditor = ({ tableHtml }: SignatureEditorProps) => {
                   </p>
                   <p className="text-left text-gray-400 dark:text-gray-600 text-[14px] leading-[25px]">
                     This is a sample text to show how your email signature will
-                    appear with an email body. Everything below this text will
-                    be copied when you click the{" "}
-                    <strong>Copy to Clipboard</strong> button.
+                    appear with an email body. Click the{" "}
+                    <strong>Copy to clipboard</strong> button to copy the
+                    signature below.
                   </p>
                   <br />
                 </div>

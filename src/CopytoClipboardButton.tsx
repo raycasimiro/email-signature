@@ -71,8 +71,8 @@ const CopytoClipboardButton: React.FC<ClipboardProps> = ({
       disabled={isDisabled}
       className="bg-orange-600 hover:bg-orange-800 dark:bg-orange-400 disabled:bg-gray-500 dark:disabled:bg-gray-500"
     >
-      <ClipboardCopy className="h-[1.2rem] w-[1.2rem] mr-2" />
-      Copy to Clipboard
+      <ClipboardCopy className="h-[1.2rem] w-[1.2rem] mr-1" />
+      Copy to clipboard
     </Button>
   );
 };
