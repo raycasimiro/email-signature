@@ -1,17 +1,8 @@
-import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import parse, { Element, HTMLReactParserOptions } from "html-react-parser";
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { ModeToggle } from "./components/ModeToggle";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./components/ui/card";
-import { Separator } from "./components/ui/separator";
+import { ScrollArea } from "./components/ui/scroll-area";
 import CopytoClipboardButton from "./CopytoClipboardButton";
 import DynamicForm from "./DynamicForm";
 import EditableField from "./EditableField";
@@ -95,59 +86,56 @@ const SignatureEditor = ({ tableHtml }: SignatureEditorProps) => {
   }, [tableHtml]);
 
   return (
-    <div className="h-full">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel
-          defaultSize={20}
-          minSize={10}
-          maxSize={30}
-          className="bg-slate-700 p-6 text-white border-0 pt-16"
-        >
-          <DynamicForm
-            fields={editableFields}
-            onFieldChange={handleFieldChange}
-            initialValues={previousValues}
-            onValidationStatusChange={handleValidationStatusChange}
-          />
-        </ResizablePanel>
-        {/* <ResizableHandle /> */}
-        <ResizablePanel>
-          <div className="flex justify-center items-center h-full">
-            <Card className="w-[600px] dark:bg-slate-900">
-              <CardHeader>
-                <CardTitle>Basic Signature</CardTitle>
-                <CardDescription>
-                  The most basic signature template ever
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="select-none">
-                <div>
-                  <p className="text-left text-gray-400 dark:text-gray-600 text-[14px] leading-[25px] mb-2">
-                    Hello User,
-                  </p>
-                  <p className="text-left text-gray-400 dark:text-gray-600 text-[14px] leading-[25px]">
-                    This is a sample text to show how your email signature will
-                    appear with an email body. Click the{" "}
-                    <strong>Copy to clipboard</strong> button to copy the
-                    signature below.
-                  </p>
-                  <br />
-                </div>
-                <div ref={divRef}>{parse(htmlContent, options)}</div>
-              </CardContent>
-              <Separator />
-              <CardFooter className="flex justify-between pt-6">
-                <ModeToggle />
-                {isFormValid ? (
-                  <CopytoClipboardButton divRef={divRef} />
-                ) : (
-                  <CopytoClipboardButton divRef={divRef} isDisabled={true} />
-                )}
-              </CardFooter>
-            </Card>
+    <div className="h-screen">
+      <div className="flex justify-center items-center h-screen">
+        <div className="">
+          <ScrollArea className="h-[600px] w-[340px] rounded-tl-md rounded-bl-md border-0 bg-slate-700 text-white">
+            <div className="p-6">
+              <h2 className="font-semibold">Signature details</h2>
+            </div>
+            <div className="p-6">
+              <DynamicForm
+                fields={editableFields}
+                onFieldChange={handleFieldChange}
+                initialValues={previousValues}
+                onValidationStatusChange={handleValidationStatusChange}
+              />
+            </div>
+          </ScrollArea>
+        </div>
+        <div className="flex flex-col justify-between max-w-[600px] h-[600px] bg-white dark:bg-slate-800 rounded-tr-md rounded-br-md">
+          <div className="p-6">
+            <h2 className="font-semibold">Basic Signature Template</h2>
+            <p className="text-sm">The most basic signature template ever</p>
           </div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
+          <div className="p-6">
+            <div>
+              <p className="text-left text-gray-400 dark:text-gray-600 text-[14px] leading-[25px] mb-2">
+                Hello User,
+              </p>
+              <p className="text-left text-gray-400 dark:text-gray-600 text-[14px] leading-[25px]">
+                This is a sample text to show how your email signature will
+                appear with an email body. Click the{" "}
+                <strong>Copy to clipboard</strong> button to copy the signature
+                below.
+              </p>
+              <br />
+            </div>
+            <div className="select-none" ref={divRef}>
+              {parse(htmlContent, options)}
+            </div>
+          </div>
+
+          <div className="flex justify-between p-6 border-t border-gray-200 dark:border-slate-700">
+            <ModeToggle />
+            {isFormValid ? (
+              <CopytoClipboardButton divRef={divRef} />
+            ) : (
+              <CopytoClipboardButton divRef={divRef} isDisabled={true} />
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

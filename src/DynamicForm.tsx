@@ -78,7 +78,6 @@ const DynamicForm = ({
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-      <h2 className="text-lg text-left">Signature details</h2>
       {fields.map((field) => (
         <div key={field.id} className="text-left flex flex-col gap-2">
           <Label htmlFor={field.id}>{toSentenceCase(field.id)}</Label>
