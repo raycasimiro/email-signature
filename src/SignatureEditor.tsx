@@ -160,10 +160,13 @@ const SignatureEditor = ({ tableHtml }: SignatureEditorProps) => {
                       How to setup your email signature in Gmail
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      <img
-                        src="https://storage.googleapis.com/support-kms-prod/yL4gtsrPqsbSYvjhIboxiUu7sW6TAIcih7Yc"
-                        alt=""
-                      />
+                      <div className="min-w-[293px]">
+                        <img
+                          src="https://storage.googleapis.com/support-kms-prod/yL4gtsrPqsbSYvjhIboxiUu7sW6TAIcih7Yc"
+                          alt=""
+                        />
+                      </div>
+
                       <ol className="list-decimal list-outside flex flex-col gap-4 pt-4 pl-4">
                         <li>
                           After entering your signature details, click the
