@@ -101,6 +101,7 @@
 
   .dark .text,
   .dark .url,
+  .dark .phone,
   .dark .email {
     @apply !text-white;
   }

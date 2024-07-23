@@ -37,6 +37,7 @@ const urlSchema = z.string().refine(
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email").min(1, "Email is required"),
+  "primary-phone": z.string().min(1, "Phone is required"),
   website: urlSchema,
   // Add more validation rules based on your form fields
 });
@@ -80,7 +81,9 @@ const DynamicForm = ({
     <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
       {fields.map((field) => (
         <div key={field.id} className="text-left flex flex-col gap-2">
-          <Label htmlFor={field.id}>{toSentenceCase(field.id)}</Label>
+          <Label htmlFor={field.id}>
+            <span className="font-inter">{toSentenceCase(field.id)}</span>
+          </Label>
           <Controller
             name={field.id}
             control={control}
@@ -88,7 +91,7 @@ const DynamicForm = ({
             render={({ field: { onChange, value, onBlur, ref } }) => (
               <>
                 <Input
-                  className="bg-white text-black border-white"
+                  className="bg-white text-black border-white font-inter"
                   id={field.id}
                   ref={ref}
                   type={field.class}
@@ -104,7 +107,7 @@ const DynamicForm = ({
                 />
                 {errors[field.id] && (
                   <div className="box arrow-top-left">
-                    <span className="text-white text-xs">
+                    <span className="text-white text-xs font-inter">
                       {errors[field.id]?.message}
                     </span>
                   </div>

@@ -24,7 +24,26 @@ const EditableField = ({ id, type, style, value }: EditableFieldProps) => {
         );
       case "url":
         return (
-          <a href={`https://${value}`} id={id} style={style} className={type}>
+          <a
+            href={`https://${value}`}
+            id={id}
+            style={style}
+            className={type}
+            target="_blank"
+          >
+            {value}
+          </a>
+        );
+
+      case "phone":
+        return (
+          <a
+            href={`tel:${value}`}
+            id={id}
+            style={style}
+            className={type}
+            target="_blank"
+          >
             {value}
           </a>
         );

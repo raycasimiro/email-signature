@@ -59,7 +59,7 @@ const CopytoClipboardButton: React.FC<ClipboardProps> = ({
       title: (
         <div className="flex items-center gap-1">
           <CircleCheck className="text-white" />{" "}
-          <span>Copied to clipboard</span>
+          <span className="font-inter">Copied to clipboard</span>
         </div>
       ),
     });
@@ -69,7 +69,7 @@ const CopytoClipboardButton: React.FC<ClipboardProps> = ({
     <Button
       onClick={copyAllContentToClipboard}
       disabled={isDisabled}
-      className="bg-orange-600 hover:bg-orange-800 dark:bg-orange-400 disabled:bg-gray-500 dark:disabled:bg-gray-500"
+      className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-400 dark:hover:bg-orange-200 disabled:bg-gray-500 dark:disabled:bg-gray-500"
     >
       <ClipboardCopy className="h-[1.2rem] w-[1.2rem] mr-1" />
       Copy to clipboard

@@ -2,7 +2,7 @@ import "./App.css";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { Toaster } from "./components/ui/toaster";
 import SignaturePreview from "./SignatureEditor";
-import content from "./templates/basic";
+import content from "./templates/subble";
 
 function App() {
   return (
