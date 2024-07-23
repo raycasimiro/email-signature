@@ -3,7 +3,6 @@ import path from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/email-signature/",
   plugins: [react()],
   server: {
     port: 8080,
