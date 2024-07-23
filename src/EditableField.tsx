@@ -35,10 +35,11 @@ const EditableField = ({ id, type, style, value }: EditableFieldProps) => {
           </a>
         );
 
-      case "phone":
+      case "phone": {
+        const num = value;
         return (
           <a
-            href={`tel:${value}`}
+            href={`tel:${num.replace(/\s+/g, "")}`}
             id={id}
             style={style}
             className={type}
@@ -47,6 +48,7 @@ const EditableField = ({ id, type, style, value }: EditableFieldProps) => {
             {value}
           </a>
         );
+      }
       default:
         return (
           <span id={id} style={style} className={type}>
