@@ -1,4 +1,5 @@
 import parse, { Element, HTMLReactParserOptions } from "html-react-parser";
+import { LifeBuoy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { ModeToggle } from "./components/ModeToggle";
@@ -8,6 +9,17 @@ import DynamicForm from "./DynamicForm";
 import EditableField from "./EditableField";
 import extractIdAndClass from "./utils/extractIdandClass";
 import parseCssString from "./utils/parseCssString";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface SignatureEditorProps {
   tableHtml: string;
@@ -131,11 +143,75 @@ const SignatureEditor = ({ tableHtml }: SignatureEditorProps) => {
 
           <div className="flex justify-between p-6 border-t border-gray-200 dark:border-slate-700">
             <ModeToggle />
-            {isFormValid ? (
-              <CopytoClipboardButton divRef={divRef} />
-            ) : (
-              <CopytoClipboardButton divRef={divRef} isDisabled={true} />
-            )}
+            <div className="flex gap-3 justify-center items-center">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button className="bg-slate-300 hover:bg-slate-600 dark:bg-slate-700 dark:hover:bg-slate-400 w-[36px] h-[36px] flex justify-center items-center rounded-full p-0">
+                    <LifeBuoy
+                      color="#ffffff"
+                      strokeWidth={1.25}
+                      className="w-[24px] h-[24px]"
+                    />
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="min-w-[520px]">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      How to setup your email signature in Gmail
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      <img
+                        src="https://storage.googleapis.com/support-kms-prod/yL4gtsrPqsbSYvjhIboxiUu7sW6TAIcih7Yc"
+                        alt=""
+                      />
+                      <ol className="list-decimal list-outside flex flex-col gap-4 pt-4 pl-4">
+                        <li>
+                          After entering your signature details, click the
+                          <strong> Copy to clipboard</strong> button
+                        </li>
+                        <li>
+                          Sign into Gmail and click the{" "}
+                          <strong>gear icon</strong> in the upper right.
+                        </li>
+                        <li>
+                          Click <strong>See all settings</strong>
+                        </li>
+                        <li>
+                          Scroll down to the <strong>Signature</strong> section
+                          and click <strong>Create new</strong>
+                        </li>
+                        <li>
+                          Type in a name and click <strong>Create</strong>
+                        </li>
+                        <li>
+                          Click into the signature dialog box and then{" "}
+                          <strong>Paste</strong> (Ctrl-V)
+                        </li>
+                        <li>
+                          Set your signature to be used for both{" "}
+                          <strong> new emails </strong>
+                          and on <strong>replies/forward</strong>, and hit the
+                          “Insert signature before quoted text…” checkbox.
+                        </li>
+                        <li>
+                          Scroll down to the bottom of the “Settings” page and
+                          click <strong>Save changes</strong>
+                        </li>
+                      </ol>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogAction>Got it!</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
+              {isFormValid ? (
+                <CopytoClipboardButton divRef={divRef} />
+              ) : (
+                <CopytoClipboardButton divRef={divRef} isDisabled={true} />
+              )}
+            </div>
           </div>
         </div>
       </div>
