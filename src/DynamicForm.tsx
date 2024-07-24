@@ -26,7 +26,7 @@ type FormValues = {
 const urlSchema = z.string().refine(
   (url) => {
     // Regex to validate a valid domain name, optionally starting with http://, https://, or www.
-    const urlPattern = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+    const urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
     return urlPattern.test(url);
   },
   {
@@ -34,10 +34,22 @@ const urlSchema = z.string().refine(
   }
 );
 
+// Custom phone number validation schema
+const phoneSchema = z.string().refine(
+  (phone) => {
+    // Regex to validate a phone number with no letters
+    const phonePattern = /^[0-9\s\-()]+$/;
+    return phonePattern.test(phone);
+  },
+  {
+    message: "Invalid phone number",
+  }
+);
+
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email").min(1, "Email is required"),
-  "primary-phone": z.string().min(1, "Phone is required"),
+  "primary-phone": phoneSchema,
   website: urlSchema,
   // Add more validation rules based on your form fields
 });
