@@ -1,4 +1,4 @@
-import { CircleCheck, ClipboardCopy } from "lucide-react";
+import { CircleAlert, CircleCheck, ClipboardCopy } from "lucide-react";
 import React from "react";
 import { Button } from "./components/ui/button";
 import { useToast } from "./components/ui/use-toast";
@@ -45,24 +45,31 @@ const CopytoClipboardButton: React.FC<ClipboardProps> = ({
       });
 
       await navigator.clipboard.write([clipboardItem]);
-      console.log("Content copied to clipboard");
+      toast({
+        variant: "success",
+        title: (
+          <div className="flex items-center gap-1">
+            <CircleCheck className="text-white" />{" "}
+            <span className="font-inter">Copied to clipboard</span>
+          </div>
+        ),
+      });
     } catch (error) {
-      console.error("Failed to copy content: ", error);
+      toast({
+        variant: "destructive",
+        title: (
+          <div className="flex items-center gap-1">
+            <CircleAlert className="text-white" />{" "}
+            <span className="font-inter">Copy to clipboard failed</span>
+          </div>
+        ),
+      });
     }
   };
 
   const copyAllContentToClipboard = async () => {
     selectAllContent();
     await copyToClipboard();
-    toast({
-      variant: "success",
-      title: (
-        <div className="flex items-center gap-1">
-          <CircleCheck className="text-white" />{" "}
-          <span className="font-inter">Copied to clipboard</span>
-        </div>
-      ),
-    });
   };
 
   return (

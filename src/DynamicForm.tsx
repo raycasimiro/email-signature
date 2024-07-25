@@ -37,8 +37,8 @@ const urlSchema = z.string().refine(
 // Custom phone number validation schema
 const phoneSchema = z.string().refine(
   (phone) => {
-    // Regex to validate a phone number with no letters
-    const phonePattern = /^[0-9\s\-()]+$/;
+    // Regex to validate a phone number with +, numbers, spaces, hyphens, and parentheses
+    const phonePattern = /^[0-9\s\-()+]+$/;
     return phonePattern.test(phone);
   },
   {
