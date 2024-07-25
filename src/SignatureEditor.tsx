@@ -125,9 +125,7 @@ const SignatureEditor = ({ tableHtml }: SignatureEditorProps) => {
                 below.
               </p>
             </div>
-            <div className="select-none" ref={divRef}>
-              {parse(htmlContent, options)}
-            </div>
+            <div ref={divRef}>{parse(htmlContent, options)}</div>
           </div>
 
           <div className="flex justify-between p-6 border-t border-gray-200 dark:border-slate-700">
