@@ -13,6 +13,7 @@ const CopytoClipboardButton: React.FC<ClipboardProps> = ({
   isDisabled,
 }) => {
   const { toast } = useToast();
+
   const selectAllContent = () => {
     if (divRef.current) {
       const range = document.createRange();
@@ -27,33 +28,49 @@ const CopytoClipboardButton: React.FC<ClipboardProps> = ({
 
   const copyToClipboard = async () => {
     try {
-      const selection = document.getSelection();
-
-      if (!selection || selection.rangeCount === 0) {
-        console.error("No content selected to copy");
+      if (!divRef.current) {
+        console.error("No content to copy");
         return;
       }
 
-      const range = selection.getRangeAt(0);
-      const docFragment = range.cloneContents();
+      const htmlContent = divRef.current.innerHTML;
 
-      const clipboardItem = new ClipboardItem({
-        "text/html": new Blob(
-          [new XMLSerializer().serializeToString(docFragment)],
-          { type: "text/html" }
-        ),
-      });
+      if (navigator.clipboard && window.ClipboardItem) {
+        const clipboardItem = new ClipboardItem({
+          "text/html": new Blob([htmlContent], { type: "text/html" }),
+        });
 
-      await navigator.clipboard.write([clipboardItem]);
-      toast({
-        variant: "success",
-        title: (
-          <div className="flex items-center gap-1">
-            <CircleCheck className="text-white" />{" "}
-            <span className="font-inter">Copied to clipboard</span>
-          </div>
-        ),
-      });
+        await navigator.clipboard.write([clipboardItem]);
+        toast({
+          variant: "success",
+          title: (
+            <div className="flex items-center gap-1">
+              <CircleCheck className="text-white" />{" "}
+              <span className="font-inter">Copied to clipboard</span>
+            </div>
+          ),
+        });
+      } else {
+        // Fallback for browsers that do not support ClipboardItem
+        if (divRef.current) {
+          const range = document.createRange();
+          range.selectNodeContents(divRef.current);
+          const selection = window.getSelection();
+          selection?.removeAllRanges();
+          selection?.addRange(range);
+          document.execCommand("copy");
+          selection?.removeAllRanges();
+          toast({
+            variant: "success",
+            title: (
+              <div className="flex items-center gap-1">
+                <CircleCheck className="text-white" />{" "}
+                <span className="font-inter">Copied to clipboard</span>
+              </div>
+            ),
+          });
+        }
+      }
     } catch (error) {
       toast({
         variant: "destructive",
